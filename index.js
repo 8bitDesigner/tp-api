@@ -60,7 +60,16 @@ TPRequest.prototype.where = function(search) {
 TPRequest.prototype.pluck = function() {
   var args = Array.prototype.slice.call(arguments)
 
+  if (this.opts.qs.exclude) { this.opts.js.exclude = null }
   this.opts.qs.include = '[' + args.join(',') + ']'
+  return this
+}
+
+TPRequest.prototype.omit = function() {
+  var args = Array.prototype.slice.call(arguments)
+
+  if (this.opts.qs.include) { this.opts.js.include = null }
+  this.opts.qs.exclude = '[' + args.join(',') + ']'
   return this
 }
 
