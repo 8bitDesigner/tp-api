@@ -1,0 +1,14 @@
+{
+  "name": "tp-api",
+  "version": "0.0.0",
+  "description": "An API to access entities from TargetProcess",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul Sweeney <paul@8-bitdesign.com>",
+  "license": "BSD",
+  "dependencies": {
+    "request": "~2.27.0"
+  }
+}
