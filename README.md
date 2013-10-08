@@ -33,6 +33,7 @@ Returns a TargetProcess request object. Can optionally set an entity to request.
 Tells the TargetProcess object to request the given entity. An entity can be one
 of the following:
 
+* Context
 * Projects
 * Features
 * Releases

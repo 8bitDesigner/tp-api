@@ -39,7 +39,7 @@ TPRequest.prototype.entities = [
   'Projects', 'Features', 'Releases', 'Iterations', 'Requests',
   'CustomFields', 'Bugs', 'Tasks', 'TestCases', 'Times',
   'Impediments', 'Assignments', 'Attachments', 'Comments',
-  'UserStories', 'Roles', 'GeneralUsers'
+  'UserStories', 'Roles', 'GeneralUsers', 'Context'
 ]
 
 TPRequest.prototype.get = function(entity) {
