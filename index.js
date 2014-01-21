@@ -21,7 +21,7 @@ function configure(opts) {
   var urlRoot = 'https://'+domain+'/api/v'+version
 
   return function(entity) {
-    var instance = new TPRequest(urlRoot, token);
+    var instance = new TPCollection(urlRoot, token);
     if (entity) { instance.get(entity) }
     return instance
   }
@@ -92,9 +92,9 @@ TPEntity.prototype.then = function(cb) {
   }, options);
 }
 
-// TP Requests
+// TP Entity Collection
 // ----------------------
-function TPRequest(baseUrl, token) {
+function TPCollection(baseUrl, token) {
   this.baseUrl = baseUrl
   this.opts = {
     json: true,
@@ -103,31 +103,36 @@ function TPRequest(baseUrl, token) {
   }
 }
 
-TPRequest.prototype.entities = [
+TPCollection.prototype.entities = [
   'Projects', 'Features', 'Releases', 'Iterations', 'Requests',
   'CustomFields', 'Bugs', 'Tasks', 'TestCases', 'Times',
   'Impediments', 'Assignments', 'Attachments', 'Comments',
   'UserStories', 'Roles', 'GeneralUsers', 'Context'
 ]
 
-TPRequest.prototype.get = function(entity) {
+/**
+ * Synchronously create a TPEntity instance
+ * @param  {Integer|String} entity id for TP item
+ * @return {Object} TPEntity 
+ */
+TPCollection.prototype.get = function(entity) {
   // @todo add TPEntity fetching from cache?
   return new TPEntity({}, {
     baseUrl: this.baseUrl+'/'+entity
   })  
 }
 
-TPRequest.prototype.take = function(number) {
+TPCollection.prototype.take = function(number) {
   this.opts.qs.take = number
   return this
 }
 
-TPRequest.prototype.where = function(search) {
+TPCollection.prototype.where = function(search) {
   this.opts.qs.where = search
   return this
 }
 
-TPRequest.prototype.pluck = function() {
+TPCollection.prototype.pluck = function() {
   var args = Array.prototype.slice.call(arguments)
 
   if (this.opts.qs.exclude) { this.opts.js.exclude = null }
@@ -135,7 +140,7 @@ TPRequest.prototype.pluck = function() {
   return this
 }
 
-TPRequest.prototype.omit = function() {
+TPCollection.prototype.omit = function() {
   var args = Array.prototype.slice.call(arguments)
 
   if (this.opts.qs.include) { this.opts.js.include = null }
@@ -143,12 +148,12 @@ TPRequest.prototype.omit = function() {
   return this
 }
 
-TPRequest.prototype.sortBy = function(property) {
+TPCollection.prototype.sortBy = function(property) {
   this.opts.qs.orderBy = property
   return this
 }
 
-TPRequest.prototype.then = function(cb, options) {
+TPCollection.prototype.then = function(cb, options) {
   var opts = _.extend({}, this.opts, options)
   TPSync(cb, options)
 }
