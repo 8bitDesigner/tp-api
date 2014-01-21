@@ -110,16 +110,13 @@ TPCollection.prototype.entities = [
   'UserStories', 'Roles', 'GeneralUsers', 'Context'
 ]
 
-/**
- * Synchronously create a TPEntity instance
- * @param  {Integer|String} entity id for TP item
- * @return {Object} TPEntity 
- */
-TPCollection.prototype.get = function(entity) {
-  // @todo add TPEntity fetching from cache?
-  return new TPEntity({}, {
-    baseUrl: this.baseUrl+'/'+entity
-  })  
+TPCollection.prototype.get = function(baseUrl, token) {
+  this.baseUrl = baseUrl
+  this.opts = {
+    json: true,
+    baseUrl: this.baseUrl+'/'+token
+  }
+  return this;
 }
 
 TPCollection.prototype.take = function(number) {
@@ -153,9 +150,9 @@ TPCollection.prototype.sortBy = function(property) {
   return this
 }
 
-TPCollection.prototype.then = function(cb, options) {
-  var opts = _.extend({}, this.opts, options)
-  TPSync(cb, options)
+TPCollection.prototype.then = function(cb) {
+  var opts = this.opts
+  TPSync(cb, opts)
 }
 
 // TPSync
