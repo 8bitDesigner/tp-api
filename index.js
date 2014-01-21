@@ -42,27 +42,29 @@ function configure(opts) {
 
 // TP Entities
 // ----------------------
-function TPEntity(data, request) {
-  this.sync(data)
-  this.request = request
+function TPEntity(data, options) {
+  this.sync(data);
+  this.options = {};
+  this.sync.apply(this.options, options)
+
 }
 
-TPEntity.prototype.create = function(data) {
-  this.request.then(this.sync, {
+TPEntity.prototype.create = function(data, cb) {
+  this.then(cb, {
     json: data,
     method: 'POST'
   })
 }
 
-TPEntity.prototype.update = function(data) {
-  this.request.then(this.sync, {
+TPEntity.prototype.update = function(data, cb) {
+  this.then(cb, {
     json: data,
     method: 'PUT'
   })
 }
 
-TPEntity.prototype.delete = function() {
-  this.request.then(this.sync, {
+TPEntity.prototype.delete = function(cb) {
+  this.then(cb, {
     method: 'DELETE'
   })
 }
@@ -72,6 +74,23 @@ TPEntity.prototype.sync(data){
   Object.keys(data).forEach(function(key) { self[key] = data[key] })
 }
 
+/**
+ * Thin wrapper around then call
+ * @param  {Function} cb expects (err, TPEntity(s))
+ * @return {Object} TPEntity
+ */
+TPEntity.prototype.then = function(cb) {
+  options = this.options
+  TPSync.apply(this, function(err, data){
+    if( err ) {
+      return err;
+    }
+    this.sync(data);
+    if( cb ) {
+      cb(data);
+    }  
+  }, options);
+}
 
 // TP Requests
 // ----------------------
@@ -92,8 +111,10 @@ TPRequest.prototype.entities = [
 ]
 
 TPRequest.prototype.get = function(entity) {
-  this.opts.url = this.baseUrl+'/'+entity
-  return this
+  // @todo add TPEntity fetching from cache?
+  return new TPEntity({}, {
+    baseUrl: this.baseUrl+'/'+entity
+  })  
 }
 
 TPRequest.prototype.take = function(number) {
@@ -129,8 +150,13 @@ TPRequest.prototype.sortBy = function(property) {
 
 TPRequest.prototype.then = function(cb, options) {
   var opts = _.extend({}, this.opts, options)
+  TPSync(cb, options)
+}
 
-  request(opts, function(err, res, json) {
+// TPSync
+// -----------------
+function TPSync(cb, opts) {
+  return request(opts, function(err, res, json) {
     if (json && json.Items) { json = json.Items }
 
     if (typeof json === 'string') {
@@ -149,14 +175,5 @@ TPRequest.prototype.then = function(cb, options) {
   })
 }
 
-TPRequest.prototype.thenEntities = function(cb) {
-  TPRequest.prototype.then(function(err, data){
-    if( err ) {
-      return err;
-    }
-    // @todo figure out proper response for multiple TPEntities
-    return new TPEntity(data);
-  });
-}
 
 module.exports = configure
