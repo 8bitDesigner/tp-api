@@ -1,4 +1,5 @@
 var request = require('request')
+var _ = require('lodash')
 
 function configure(opts) {
   // Catch folks using the `new` keyword when invoking our configurator
@@ -26,35 +27,54 @@ function configure(opts) {
   }
 }
 
-tp.create({}, function(err, entity) {
+// Usage
+// ---------
+// tp.create({}, function(err, entity) {
+//
+// })
+// 
+// tp.get('Entity', 1234).fetch(err, entity) { })
+// 
+// tp.get('Entity', 1234).destroy()
+// 
+// tp.get('Entity', 1234).update({a: 'b'}, cb)
 
-})
 
-tp.get('Entity', 1234).fetch(err, entity) { })
+// TP Entities
+// ----------------------
+function TPEntity(data, request) {
+  this.sync(data)
+  this.request = request
+}
 
-tp.get('Entity', 1234).destroy()
+TPEntity.prototype.create = function(data) {
+  this.request.then(this.sync, {
+    json: data,
+    method: 'POST'
+  })
+}
 
-tp.get('Entity', 1234).update({a: 'b'}, cb)
+TPEntity.prototype.update = function(data) {
+  this.request.then(this.sync, {
+    json: data,
+    method: 'PUT'
+  })
+}
 
+TPEntity.prototype.delete = function() {
+  this.request.then(this.sync, {
+    method: 'DELETE'
+  })
+}
 
-function TPEntity(options) {
+TPEntity.prototype.sync(data){
   var self = this
-  Object.keys(options).forEach(function(key) { self[key] = options[key] })
-}
-
-TPEntity.prototype.create = function() {
-
-}
-
-TPEntity.prototype.update() {
-
-}
-
-TPEntity.prototype.delete() {
-
+  Object.keys(data).forEach(function(key) { self[key] = data[key] })
 }
 
 
+// TP Requests
+// ----------------------
 function TPRequest(baseUrl, token) {
   this.baseUrl = baseUrl
   this.opts = {
@@ -107,10 +127,10 @@ TPRequest.prototype.sortBy = function(property) {
   return this
 }
 
-TPRequest.prototype.then = function(cb) {
-  var opts = this.opts
+TPRequest.prototype.then = function(cb, options) {
+  var opts = _.extend({}, this.opts, options)
 
-  request(this.opts, function(err, res, json) {
+  request(opts, function(err, res, json) {
     if (json && json.Items) { json = json.Items }
 
     if (typeof json === 'string') {
@@ -127,6 +147,16 @@ TPRequest.prototype.then = function(cb) {
 
     cb(err, (err) ? null : json)
   })
+}
+
+TPRequest.prototype.thenEntities = function(cb) {
+  TPRequest.prototype.then(function(err, data){
+    if( err ) {
+      return err;
+    }
+    // @todo figure out proper response for multiple TPEntities
+    return new TPEntity(data);
+  });
 }
 
 module.exports = configure

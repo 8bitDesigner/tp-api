@@ -9,6 +9,7 @@
   "author": "Paul Sweeney <paul@8-bitdesign.com>",
   "license": "BSD",
   "dependencies": {
-    "request": "~2.27.0"
+    "request": "~2.27.0",
+    "lodash": "~2.4.1"
   }
 }
