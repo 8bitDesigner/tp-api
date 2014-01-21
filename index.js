@@ -26,6 +26,35 @@ function configure(opts) {
   }
 }
 
+tp.create({}, function(err, entity) {
+
+})
+
+tp.get('Entity', 1234).fetch(err, entity) { })
+
+tp.get('Entity', 1234).destroy()
+
+tp.get('Entity', 1234).update({a: 'b'}, cb)
+
+
+function TPEntity(options) {
+  var self = this
+  Object.keys(options).forEach(function(key) { self[key] = options[key] })
+}
+
+TPEntity.prototype.create = function() {
+
+}
+
+TPEntity.prototype.update() {
+
+}
+
+TPEntity.prototype.delete() {
+
+}
+
+
 function TPRequest(baseUrl, token) {
   this.baseUrl = baseUrl
   this.opts = {
