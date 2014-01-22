@@ -44,8 +44,8 @@ function configure(opts) {
 // ----------------------
 function TPEntity(data, options) {
   this.sync(data);
-  this.options = {};
-  this.sync.apply(this.options, options)
+  this.opts = {};
+  this.sync.apply(this.opts, options)
 
 }
 
@@ -80,7 +80,7 @@ TPEntity.prototype.sync(data){
  * @return {Object} TPEntity
  */
 TPEntity.prototype.then = function(cb) {
-  options = this.options
+  var options = this.opts
   TPSync.apply(this, function(err, data){
     if( err ) {
       return err;
@@ -152,7 +152,16 @@ TPCollection.prototype.sortBy = function(property) {
 
 TPCollection.prototype.then = function(cb) {
   var opts = this.opts
-  TPSync(cb, opts)
+  var that = this
+  TPSync(function(err, data){
+    var tasks = []
+    if( data ) {
+      data.Items.forEach(function(taskData, index){
+        tasks.push(new TPEntity(taskData, that.opts))
+      }) 
+    }
+    cb(err, tasks)
+  }, opts)
 }
 
 // TPSync
