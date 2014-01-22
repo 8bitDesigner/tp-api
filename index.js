@@ -1,6 +1,6 @@
 var request = require('request')
 var _ = require('lodash')
-
+var TPCollection = require('./lib/tpcollection')
 
 function configure(opts) {
   // Catch folks using the `new` keyword when invoking our configurator
@@ -39,12 +39,6 @@ function configure(opts) {
 // tp.get('Entity', 1234).destroy()
 // 
 // tp.get('Entity', 1234).update({a: 'b'}, cb)
-
-
-
-
-
-
 
 
 module.exports = configure
