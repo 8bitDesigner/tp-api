@@ -1,6 +1,6 @@
 var request = require('request')
 var _ = require('lodash')
-var TPCollection = require('./lib/tpcollection')
+var TPQuery = require('./lib/tpquery')
 
 function configure(opts) {
   // Catch folks using the `new` keyword when invoking our configurator
@@ -22,7 +22,7 @@ function configure(opts) {
   var urlRoot = 'https://'+domain+'/api/v'+version
 
   return function(entity) {
-    var instance = new TPCollection(urlRoot, token);
+    var instance = new TPQuery(urlRoot, token);
     if (entity) { instance.get(entity) }
     return instance
   }
