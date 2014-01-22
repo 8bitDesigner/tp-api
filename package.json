@@ -11,5 +11,8 @@
   "dependencies": {
     "request": "~2.27.0",
     "lodash": "~2.4.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0"
   }
 }
