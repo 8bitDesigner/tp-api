@@ -51,6 +51,7 @@ of the following:
 * UserStories
 * Roles
 * GeneralUsers
+* EntityStates
 
 Example - fetch a list of roles
 ``` javascript
@@ -103,5 +104,19 @@ Example, fetch a list of tasks:
 tp('Tasks').then(function(err, tasks) {
   console.log('My tasks', tasks)
   console.error('Errors from the request', err)
+})
+```
+#### `tp.thenEntities(handlerFunction)`
+Thin wrapper around `tp.then`, but instead of returning `(err, data)` it returns `(err, entities)` where entities is an array of entity objects.
+
+Example, fetch a list of Entities
+``` javascript
+// Move all open tasks to 'Planned'
+tp('Tasks').
+  where("EntityState.Name eq 'Open'").
+  then(function(err, tasks) {
+  tasks.forEach(function(entity){
+    entity.setState('Planned')
+  })
 })
 ```
