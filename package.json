@@ -18,5 +18,12 @@
   },
   "devDependencies": {
     "mocha": "~1.17.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/8bitDesigner/tp-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/8bitDesigner/tp-api/issues"
   }
 }
