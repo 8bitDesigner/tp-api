@@ -1,6 +1,7 @@
 var request = require('request')
 var _ = require('lodash')
 var TPQuery = require('./lib/tpquery')
+var TPEntity= require('./lib/tpentity')
 
 function configure(opts) {
   // Catch folks using the `new` keyword when invoking our configurator
@@ -21,10 +22,16 @@ function configure(opts) {
   var token = opts.token
   var urlRoot = 'https://'+domain+'/api/v'+version
 
-  return function(entity) {
-    var instance = new TPQuery(urlRoot, token);
-    if (entity) { instance.get(entity) }
-    return instance
+  return function(entity, id) {
+    var collection = new TPQuery(urlRoot, token)
+      , model
+
+    if (entity) { collection.get(entity) }
+    if (entity && id) {
+      model = new TPEntity({Id: id}, collections.opts)
+    }
+
+    return (model) ? model : collection
   }
 }
 
@@ -33,11 +40,11 @@ function configure(opts) {
 // tp.create({}, function(err, entity) {
 //
 // })
-// 
+//
 // tp.get('Entity', 1234).fetch(err, entity) { })
-// 
+//
 // tp.get('Entity', 1234).destroy()
-// 
+//
 // tp.get('Entity', 1234).update({a: 'b'}, cb)
 
 
