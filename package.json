@@ -1,6 +1,6 @@
 {
   "name": "tp-api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "An API to access entities from TargetProcess",
   "main": "index.js",
   "scripts": {
