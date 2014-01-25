@@ -28,7 +28,7 @@ function configure(opts) {
 
     if (entity) { collection.get(entity) }
     if (entity && id) {
-      model = new TPEntity({Id: id}, collections.opts)
+      model = new TPEntity({Id: id}, collection.opts)
     }
 
     return (model) ? model : collection
