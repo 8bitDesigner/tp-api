@@ -20,7 +20,8 @@ function configure(opts) {
   var version = opts.version || 1
   var domain = opts.domain
   var token = opts.token
-  var urlRoot = 'https://'+domain+'/api/v'+version
+  var protocol = opts.protocol || 'https'
+  var urlRoot = protocol + '://'+domain+'/api/v'+version
 
   return function(entity, id) {
     var collection = new TPQuery(urlRoot, token)
