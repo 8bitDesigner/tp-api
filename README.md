@@ -11,6 +11,8 @@ var tp = require('tp-api')({
            domain:   // your domain here; eg: 'fullscreen.tpondemand.com'
            username: // your username; eg: 'paul@fullscreen.net'
            password: // your password
+           version:  // Optional API version - defaults to 1
+           protocol: // Optional protocol - defaults to https
          })
 
 tp('Tasks')
