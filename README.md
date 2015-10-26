@@ -96,6 +96,19 @@ Example, fetch a list of tasks by priority:
 ``` javascript
 tp('Tasks').sortBy('NumericPriority').then(function(err, tasks) { ... })
 ```
+or sort by descending order:
+```javascript
+tp('Tasks').sortByDesc('NumericPriority').then(function(err, tasks) { ... })
+```
+
+#### `tp.append(list, of, properties)`
+Instructs the Target Process request to get additional information about Entity
+
+Example, get number of bugs, tasks and comments associated with those user stories:
+```javascript
+tp('UserStories').append('Bugs-Count, Tasks-Count, Comments-Count')
+.then(function(err, tasks) { ... })
+```
 
 #### `tp.then(handlerFunction)`
 Executes the Target Process request. Your callback will be called with an
