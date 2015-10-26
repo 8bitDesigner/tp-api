@@ -69,7 +69,7 @@ tp('Tasks').take(5).then(function(err, tasks) { ... })
 ```
 
 #### `tp.where(search expression)`
-Applies a seach filter to the TargetProcess request.
+Applies a search filter to the TargetProcess request.
 
 Example, find open tasks:
 
@@ -121,4 +121,37 @@ tp('Tasks').
     entity.setState('Planned')
   })
 })
+```
+
+#### Nested JSON objects
+It may happen that the following code:
+```javascript
+tp('Tasks')
+  .take(1)
+  .pluck('CustomFields')
+  .then(function(err, tasks) {
+    console.log('my tasks', tasks)
+  }
+)
+```
+will return a lot of nested JSON objects:
+```bash
+my tasks [ { ResourceType: 'Task',
+    Id: 3631,
+    Project: { ResourceType: 'Project', Id: 4026, Process: [Object] },
+    CustomFields: [ [Object], [Object], [Object], [Object], [Object] ] } ]
+```
+The returned object `tasks` here is a JavaScript object. In order to convert it into JSON string, use [`JSON.stringify()`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify):
+```javascript
+tp('Tasks')
+  .take(1)
+  .pluck('CustomFields')
+  .then(function(err, tasks) {
+    console.log('my tasks', JSON.stringify(tasks))  // changed here
+  }
+)
+```
+and now it returns:
+```bash
+my tasks [{"ResourceType":"Task","Id":3631,"Project":{"ResourceType":"Project","Id":4026,"Process":{"Id":5,"Name":"AIScrum"}},"CustomFields":[{"Name":"Component","Type":"DropDown","Value":null},{"Name":"trac","Type":"Number","Value":null},{"Name":"Job","Type":"DropDown","Value":null},{"Name":"Resolution","Type":"DropDown","Value":null},{"Name":"Domain","Type":"DropDown","Value":null}]}]
 ```
