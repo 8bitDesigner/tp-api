@@ -16,15 +16,19 @@ function configure(opts) {
   if (!opts.domain) {
     throw new Error('A TargetProcess domain is required')
   }
+  if (!opts.acid) {
+    opts.acid = null
+  }
 
   var version = opts.version || 1
   var domain = opts.domain
   var token = opts.token
+  var acid = opts.acid
   var protocol = opts.protocol || 'https'
   var urlRoot = protocol + '://'+domain+'/api/v'+version
 
   return function(entity, id) {
-    var collection = new TPQuery(urlRoot, token)
+    var collection = new TPQuery(urlRoot, token, acid)
       , model
 
     if (entity) { collection.get(entity) }
