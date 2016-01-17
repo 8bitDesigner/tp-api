@@ -68,6 +68,14 @@ Example - fetch 5 tasks:
 tp('Tasks').take(5).then(function(err, tasks) { ... })
 ```
 
+#### `tp.context(acid)`
+Retrieve list of entities for specific projects (via Acid)
+
+Example - fetch 5 tasks of the project with the context 123456:
+``` javascript
+tp('Tasks').take(5).context(123456).then(function(err, tasks) { ... })
+```
+
 #### `tp.where(search expression)`
 Applies a search filter to the TargetProcess request.
 
