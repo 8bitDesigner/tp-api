@@ -9,7 +9,8 @@
   "author": "Paul Sweeney <paul@8-bitdesign.com> (https://github.com/8bitDesigner)",
   "contributors": [
     "Ryan Barry <azaeres@gmail.com> (https://github.com/ryancbarry)",
-    "Jeff Uyeno <jeff.uyeno@gmail.com> (https://github.com/jeffuyeno)"
+    "Jeff Uyeno <jeff.uyeno@gmail.com> (https://github.com/jeffuyeno)",
+    "Julian Kleinhans <def@kj187.de> (http://blog.kj187.de)"
   ],
   "license": "BSD",
   "dependencies": {
