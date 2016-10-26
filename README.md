@@ -144,35 +144,21 @@ tp('Tasks').
 })
 ```
 
-#### Nested JSON objects
-It may happen that the following code:
-```javascript
+## Changelog
+
+### 1.3
+Starting from this version all date-values will be converted to Date-Objects
+``` javascript
+
 tp('Tasks')
-  .take(1)
-  .pluck('CustomFields')
-  .then(function(err, tasks) {
-    console.log('my tasks', tasks)
-  }
-)
-```
-will return a lot of nested JSON objects:
-```bash
-my tasks [ { ResourceType: 'Task',
-    Id: 3631,
-    Project: { ResourceType: 'Project', Id: 4026, Process: [Object] },
-    CustomFields: [ [Object], [Object], [Object], [Object], [Object] ] } ]
-```
-The returned object `tasks` here is a JavaScript object. In order to convert it into JSON string, use [`JSON.stringify()`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify):
-```javascript
-tp('Tasks')
-  .take(1)
-  .pluck('CustomFields')
-  .then(function(err, tasks) {
-    console.log('my tasks', JSON.stringify(tasks))  // changed here
-  }
-)
-```
-and now it returns:
-```bash
-my tasks [{"ResourceType":"Task","Id":3631,"Project":{"ResourceType":"Project","Id":4026,"Process":{"Id":5,"Name":"AIScrum"}},"CustomFields":[{"Name":"Component","Type":"DropDown","Value":null},{"Name":"trac","Type":"Number","Value":null},{"Name":"Job","Type":"DropDown","Value":null},{"Name":"Resolution","Type":"DropDown","Value":null},{"Name":"Domain","Type":"DropDown","Value":null}]}]
+  .sortByDesc('StartDate')
+  .take(10)
+  .pluck('Name', 'StartDate')
+  .then((err, tasks) => {
+    if (err)  return console.log('err', err);
+    console.log('Found:', tasks.length);
+    tasks.forEach(function(t) {
+      console.log( t.Id + ' :: ' + (t.StartDate.getMonth() + 1) + "-" + t.StartDate.getDate() + "-" + t.StartDate.getFullYear() );
+    })
+  });
 ```
