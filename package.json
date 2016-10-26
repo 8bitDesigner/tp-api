@@ -10,7 +10,8 @@
   "contributors": [
     "Ryan Barry <azaeres@gmail.com> (https://github.com/ryancbarry)",
     "Jeff Uyeno <jeff.uyeno@gmail.com> (https://github.com/jeffuyeno)",
-    "Julian Kleinhans <def@kj187.de> (http://blog.kj187.de)"
+    "Julian Kleinhans <def@kj187.de> (http://blog.kj187.de)",
+    "Mathias Schopmans <mathias.schopmans@aoe.com> (http://aoe.com)"
   ],
   "license": "BSD",
   "dependencies": {
