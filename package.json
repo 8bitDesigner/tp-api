@@ -14,8 +14,9 @@
   ],
   "license": "BSD",
   "dependencies": {
-    "request": "~2.27.0",
-    "lodash": "~2.4.1"
+    "json-dotnet-date": "^0.1.7",
+    "lodash": "~2.4.1",
+    "request": "~2.27.0"
   },
   "devDependencies": {
     "mocha": "~1.17.0"
