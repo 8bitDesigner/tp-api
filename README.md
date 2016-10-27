@@ -148,7 +148,7 @@ tp('Tasks').
 ## Changelog
 
 ### Version 1.3.0
-Starting from this version you can return real [Date-Objects](https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date).
+Starting from this version you can return real [Date-Objects](https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date) if `convertJsonDates` is set to `true`
 ``` javascript
 var tp = require('tp-api')({
   domain: 'domain.tld',
