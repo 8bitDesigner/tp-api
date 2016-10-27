@@ -145,6 +145,18 @@ tp('Tasks').
 })
 ```
 
+## Hint
+Some of these methods will return deeply nested objects. If you want to debug them it's recommended to use node's [`util.inspect()`](https://nodejs.org/api/util.html#util_util_inspect_object_options)
+```
+var util = require('util');
+tp('Tasks')
+  .take(10)
+  .then(function(err, tasks) {
+    console.log(util.inspect(tasks, { showHidden: true, depth: null }));
+  }
+)
+```
+
 ## Changelog
 
 ### Version 1.3.0
