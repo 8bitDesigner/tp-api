@@ -8,12 +8,13 @@ In your NodeJS program, add:
 
 ``` javascript
 var tp = require('tp-api')({
-           domain:   // your domain here; eg: 'fullscreen.tpondemand.com'
-           username: // your username; eg: 'paul@fullscreen.net'
-           password: // your password
-           version:  // Optional API version - defaults to 1
-           protocol: // Optional protocol - defaults to https
-         })
+ domain:   // your domain here; eg: 'fullscreen.tpondemand.com'
+ username: // your username; eg: 'paul@fullscreen.net'
+ password: // your password
+ version:  // Optional API version - defaults to 1
+ protocol: // Optional protocol - defaults to https,
+ convertJsonDates: true // Optional convert all dates ((string) `/Date(1467210530000+0200)/`) returned by API to JS Date-Objects
+})
 
 tp('Tasks')
   .take(5)
@@ -144,35 +145,41 @@ tp('Tasks').
 })
 ```
 
-#### Nested JSON objects
-It may happen that the following code:
-```javascript
+## Hint
+Some of these methods will return deeply nested objects. If you want to debug them it's recommended to use node's [`util.inspect()`](https://nodejs.org/api/util.html#util_util_inspect_object_options)
+```
+var util = require('util');
 tp('Tasks')
-  .take(1)
-  .pluck('CustomFields')
+  .take(10)
   .then(function(err, tasks) {
-    console.log('my tasks', tasks)
+    console.log(util.inspect(tasks, { showHidden: true, depth: null }));
   }
 )
 ```
-will return a lot of nested JSON objects:
-```bash
-my tasks [ { ResourceType: 'Task',
-    Id: 3631,
-    Project: { ResourceType: 'Project', Id: 4026, Process: [Object] },
-    CustomFields: [ [Object], [Object], [Object], [Object], [Object] ] } ]
-```
-The returned object `tasks` here is a JavaScript object. In order to convert it into JSON string, use [`JSON.stringify()`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify):
-```javascript
+
+## Changelog
+
+### Version 1.3.0
+Starting from this version you can return real [Date-Objects](https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date) if `convertJsonDates` is set to `true`
+``` javascript
+var tp = require('tp-api')({
+  domain: 'domain.tld',
+  token: 'abc'
+  convertJsonDates: true
+});
 tp('Tasks')
-  .take(1)
-  .pluck('CustomFields')
-  .then(function(err, tasks) {
-    console.log('my tasks', JSON.stringify(tasks))  // changed here
-  }
-)
-```
-and now it returns:
-```bash
-my tasks [{"ResourceType":"Task","Id":3631,"Project":{"ResourceType":"Project","Id":4026,"Process":{"Id":5,"Name":"AIScrum"}},"CustomFields":[{"Name":"Component","Type":"DropDown","Value":null},{"Name":"trac","Type":"Number","Value":null},{"Name":"Job","Type":"DropDown","Value":null},{"Name":"Resolution","Type":"DropDown","Value":null},{"Name":"Domain","Type":"DropDown","Value":null}]}]
+  .take(3)
+  .pluck('Name', 'StartDate')
+  .then((err, tasks) => {
+    if (err)  return console.log('err', err);
+    tasks.forEach(function(t) {
+      console.log( t.Id + ' :: ' + (t.StartDate.getMonth() + 1) + '-' + t.StartDate.getDate() + '-' + t.StartDate.getFullYear() + ' :: ' + t.Name );
+      /*
+        Outputs:
+        85299 :: 12-8-2015 :: Task 1
+        100853 :: 6-14-2016 :: Task 2
+        85708 :: 1-4-2016 :: Task 3
+       */
+    })
+  });
 ```
