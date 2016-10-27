@@ -8,12 +8,13 @@ In your NodeJS program, add:
 
 ``` javascript
 var tp = require('tp-api')({
-           domain:   // your domain here; eg: 'fullscreen.tpondemand.com'
-           username: // your username; eg: 'paul@fullscreen.net'
-           password: // your password
-           version:  // Optional API version - defaults to 1
-           protocol: // Optional protocol - defaults to https
-         })
+ domain:   // your domain here; eg: 'fullscreen.tpondemand.com'
+ username: // your username; eg: 'paul@fullscreen.net'
+ password: // your password
+ version:  // Optional API version - defaults to 1
+ protocol: // Optional protocol - defaults to https,
+ convertJsonDates: true // Optional convert all dates ((string) `/Date(1467210530000+0200)/`) returned by API to JS Date-Objects
+})
 
 tp('Tasks')
   .take(5)
@@ -146,19 +147,27 @@ tp('Tasks').
 
 ## Changelog
 
-### 1.3
-Starting from this version all date-values will be converted to Date-Objects
+### Version 1.3.0
+Starting from this version you can return real [Date-Objects](https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Date).
 ``` javascript
-
+var tp = require('tp-api')({
+  domain: 'domain.tld',
+  token: 'abc'
+  convertJsonDates: true
+});
 tp('Tasks')
-  .sortByDesc('StartDate')
-  .take(10)
+  .take(3)
   .pluck('Name', 'StartDate')
   .then((err, tasks) => {
     if (err)  return console.log('err', err);
-    console.log('Found:', tasks.length);
     tasks.forEach(function(t) {
-      console.log( t.Id + ' :: ' + (t.StartDate.getMonth() + 1) + "-" + t.StartDate.getDate() + "-" + t.StartDate.getFullYear() );
+      console.log( t.Id + ' :: ' + (t.StartDate.getMonth() + 1) + '-' + t.StartDate.getDate() + '-' + t.StartDate.getFullYear() + ' :: ' + t.Name );
+      /*
+        Outputs:
+        85299 :: 12-8-2015 :: Task 1
+        100853 :: 6-14-2016 :: Task 2
+        85708 :: 1-4-2016 :: Task 3
+       */
     })
   });
 ```
