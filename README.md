@@ -57,7 +57,7 @@ of the following:
 
 Example - fetch a list of roles
 ``` javascript
-tp('Roles').then(function(err, tasks) { ... })
+tp('Roles').then(function(err, roles) { ... })
 ```
 
 #### `tp.take(n)`
@@ -115,7 +115,7 @@ Instructs the Target Process request to get additional information about Entity
 Example, get number of bugs, tasks and comments associated with those user stories:
 ```javascript
 tp('UserStories').append('Bugs-Count, Tasks-Count, Comments-Count')
-.then(function(err, tasks) { ... })
+.then(function(err, stories) { ... })
 ```
 
 #### `tp.then(handlerFunction)`
