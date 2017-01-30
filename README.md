@@ -86,7 +86,7 @@ tp('Tasks').where("EntityState.Name eq 'Open'").then(function(err, tasks) { ... 
 ```
 
 More info on Target Process filters can be found here:
-http://dev.targetprocess.com/rest/response_format#filtering
+https://dev.targetprocess.com/docs/sorting-and-filters
 
 #### `tp.pluck(list, of, properties)`
 Instructs the Target Process object to only include the listed properties in the
