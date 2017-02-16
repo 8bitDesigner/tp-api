@@ -57,7 +57,7 @@ of the following:
 
 Example - fetch a list of roles
 ``` javascript
-tp('Roles').then(function(err, tasks) { ... })
+tp('Roles').then(function(err, roles) { ... })
 ```
 
 #### `tp.take(n)`
@@ -86,7 +86,7 @@ tp('Tasks').where("EntityState.Name eq 'Open'").then(function(err, tasks) { ... 
 ```
 
 More info on Target Process filters can be found here:
-http://dev.targetprocess.com/rest/response_format#filtering
+https://dev.targetprocess.com/docs/sorting-and-filters
 
 #### `tp.pluck(list, of, properties)`
 Instructs the Target Process object to only include the listed properties in the
@@ -115,7 +115,7 @@ Instructs the Target Process request to get additional information about Entity
 Example, get number of bugs, tasks and comments associated with those user stories:
 ```javascript
 tp('UserStories').append('Bugs-Count, Tasks-Count, Comments-Count')
-.then(function(err, tasks) { ... })
+.then(function(err, stories) { ... })
 ```
 
 #### `tp.then(handlerFunction)`
